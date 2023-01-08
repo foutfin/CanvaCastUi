@@ -12,8 +12,9 @@
     let me ={};
     let connected = false;
     let selected = 1;
-    const socketurl = `ws://127.0.0.1:5000/join/${boardId}`;
-    const url = `http://127.0.0.1:5173/board/${boardId}`;
+    const domain="canvacastserver-production.up.railway.app";
+    const socketurl = `wss://${domain}/join/${boardId}`;
+    const url = `https://${domain}/board/${boardId}`;
 
     onMount(()=>{
         const socket = new WebSocket(socketurl);

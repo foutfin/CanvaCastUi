@@ -7,7 +7,7 @@
 
     const clickHandle =()=>{
         creatingBoard = 1;
-        const url = "http://127.0.0.1:5000/createboard"
+        const url = "https://canvacastserver-production.up.railway.app/createboard"
         fetch(url, {
                         method: 'POST', 
                         headers: {
