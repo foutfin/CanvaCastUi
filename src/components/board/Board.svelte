@@ -12,9 +12,8 @@
     let me ={};
     let connected = false;
     let selected = 1;
-    const domain="canvacastserver-production.up.railway.app";
-    const socketurl = `wss://${domain}/join/${boardId}`;
-    const url = `https://${domain}/board/${boardId}`;
+    const socketurl = `wss://canvacastserver-production.up.railway.app/join/${boardId}`;
+    const url = `https://canvacast.netlify.app/board/${boardId}`;
 
     onMount(()=>{
         const socket = new WebSocket(socketurl);
@@ -263,7 +262,6 @@
 
     .board-contai{
         background-color: #fff;
-        border:3px solid green;
     }
 
 </style>
