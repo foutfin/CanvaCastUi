@@ -14,11 +14,11 @@
     let me ={};
     let connected = false;
     let loading = true;
-    const socketurl = `ws://127.0.0.1:5000/join/${boardId}`;
-    const url = `http://127.0.0.1:5173/board/${boardId}`;
+    const socketurl = `ws://${window.location.hostname}:5000/join/${boardId}`;
+    const url = `http://${window.location.hostname}:5173/board/${boardId}`;
 
     onMount(()=>{
-        
+
         const createBoard =()=>{
             const c = document.createElement('canvas');
             c.setAttribute("width","1920");
@@ -71,7 +71,6 @@
             }else if(data.a === "eadded"){
                 connected = false;
             }else if(data.a === "list"){
-                console.log(data.l);
                  data.l.forEach((value)=>{
                     if(!names[value.id]){
                         const board = createBoard();
@@ -97,18 +96,17 @@
             }
         });
         socket.addEventListener("close",()=>{
-            // loading = false;
+            loading = false;
             connected = false;
         });
         socket.addEventListener("error",()=>{
             connected = false;
-            // loading = false;
+            loading = false;
         });
     })
 
     //Handlers
     const showOverlay = ()=>{
-        console.log("show overlay clicked");
         const overlay = document.getElementsByClassName("overlay")[0]
         overlay.style.display = "block";
     }
@@ -117,6 +115,7 @@
         overlay.style.display = "none";
     }
 </script>
+
 
 {#if loading}
 
@@ -160,6 +159,7 @@
                     <div class="overlay-title">
                         <div></div>
                         <span>Participants</span>
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <img on:click={hideOverlay} class="close" src="/images/close.png" alt="close"/>
                     </div>
                     <div class="url-copy">
@@ -167,7 +167,9 @@
                         <button on:click={()=>navigator.clipboard.writeText(url)}>Copy</button>
                     </div>
                     <div class="p-container">
-                        <User name={me.name}/>
+                        {#if me}
+                            <User name={me.name}/>
+                        {/if}
                         {#each Object.entries(names) as [id,user]}
                             <User name={user.name}/>
                         {/each}
@@ -225,6 +227,7 @@
         flex-direction: column;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        gap:5px;
     }
 
     .overlay{

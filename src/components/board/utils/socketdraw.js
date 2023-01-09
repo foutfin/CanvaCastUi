@@ -33,6 +33,5 @@ export const lineBoard = (path,canvas,ctx,color,stroke,maincanvas) =>{
         ctx.stroke();
         ctx.closePath();
         maincanvas.drawImage(canvas,0,0);
-        console.log(path.m,path.m[1]);
     }
 }

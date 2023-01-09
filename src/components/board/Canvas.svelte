@@ -2,7 +2,7 @@
     import {context,drawing,path,pen,cvs} from './stores/store.js';
     import { onMount } from 'svelte';
     import {draw,erase,line} from './utils/draw.js';
-    let previousx,previousy,currentx,currenty,board,ctx;
+    let currentx,currenty;
 
     onMount(()=>{
         const board = document.getElementById("board-canvas");
@@ -12,29 +12,6 @@
         const overlayBoard = document.getElementById("board-overlay");
         const overlayBoardContext = overlayBoard.getContext("2d");
         
-
-        // const draw = (X,Y)=>{
-        //     previousx = currentx;
-        //     previousy = currenty;
-        //     currentx = X;
-        //     currenty = Y;
-        //     context.beginPath();
-        //     context.moveTo(previousx, previousy);
-        //     context.lineTo(currentx, currenty);
-        //     context.strokeStyle = pen.color;
-        //     context.lineWidth = pen.stroke;
-        //     context.fillStyle = pen.color;
-        //     context.fill();
-        //     context.stroke();
-        //     context.closePath();
-        // }
-
-        // const erase = (X,Y)=>{
-        //     context.clearRect(X, Y, 20, 20);
-        // }
-
-        
-
         const onMove = (e) =>{
             const X = e.offsetX;
             const Y = e.offsetY;
@@ -107,11 +84,9 @@
                     $context.drawImage(overlayBoard,0,0);
                     overlayBoardContext.clearRect(0, 0, 1920, 1080);
                 }
-
             });
 
         });
-
 
         board.addEventListener('touchstart', function(e) {
             let rect = board.getBoundingClientRect();
@@ -121,7 +96,6 @@
             currentx = X;
             currenty = Y;
             
-    
             board.addEventListener('touchmove',onMoveTouch);
 
             board.addEventListener('touchend', function removeMoveHandler() {
@@ -130,17 +104,13 @@
                 if($pen.type == 5){
                     $context.drawImage(overlayBoard,0,0);
                     overlayBoardContext.clearRect(0, 0, 1920, 1080);
-                }
-                
-                
+                }                
             });
-
         });
 
     })
 
 </script>
-
 
 <style>
     #board-canvas{
@@ -158,7 +128,6 @@
     }
 
 </style>
-
 
 <canvas width="1920" height="1080" id="board-canvas" class="boards"></canvas>
 <canvas width="1920" height="1080" id="board-overlay" class="boards"></canvas>
