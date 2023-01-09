@@ -8,7 +8,7 @@
     const clickHandle =(e)=>{
         if(board_data.pName.length > 0 & board_data.bName.length > 0){
             creatingBoard = 1;
-            const url = `http://${window.location.hostname}:5000/createboard`;
+            const url = `https://canvacastserver-production.up.railway.app/createboard`;
             fetch(url, {
                         method: 'POST', 
                         headers: {

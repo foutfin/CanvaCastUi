@@ -14,8 +14,8 @@
     let me ={};
     let connected = false;
     let loading = true;
-    const socketurl = `ws://${window.location.hostname}:5000/join/${boardId}`;
-    const url = `http://${window.location.hostname}:5173/board/${boardId}`;
+    const socketurl = `wss://canvacastserver-production.up.railway.app/join/${boardId}`;
+    const url = `https://canvacast.netlify.app//board/${boardId}`;
 
     onMount(()=>{
 
