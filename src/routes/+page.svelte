@@ -1,5 +1,6 @@
 <script>
     import Board from "../components/board/Board.svelte";
+    import Loading from "../components/board/Loading.svelte";
     let board_data = {pName:"",bName:"",avatar:1};
     let creatingBoard = 0;
     let boardId;
@@ -18,8 +19,6 @@
             )
           .then((response) => response.json())
           .then((data) =>{
-                  console.log(data);
-                //   window.location.href = "http://" + location.host +`/board/${data.roomid}`;
                 boardId = data.boardid;  
                 creatingBoard = 2;
                   
@@ -31,7 +30,7 @@
 
 {#if creatingBoard==1}
 
-    <h1>Wait a while Creating Board for you</h1>
+    <Loading message={"Creating a Board"} />
 
 
 {:else if creatingBoard==2}
@@ -46,6 +45,7 @@
 
         <div class="container">
 
+            <!-- svelte-ignore a11y-autofocus -->
             <input  bind:value={board_data.pName} autofocus class="container-input" placeholder="Name" />
             <input  bind:value={board_data.bName}   class="container-input" placeholder="Board Name"/>
 
