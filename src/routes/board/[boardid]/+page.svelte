@@ -4,31 +4,31 @@
     import Board from "../../../components/board/Board.svelte";
     let attendee_data = {pName:"",avatar:1};
     let creatingBoard = 0;
-    
-    
 
-    const clickHandler = () =>{
-        creatingBoard = 1;
+    const clickHandler = (e) =>{
+        if(attendee_data.pName.length>0){
+            creatingBoard = 1;
+            return;
+        }
+        e.target.style.backgroundColor = "#ad2831";
+        return;
     }
 </script>
 
 {#if creatingBoard==0}
 
     <div class="main-container">
-        <img src={"/images/avatar.jpg"} alt="avatar" class="avatar"/>
-
+        <img src={"/images/hacker.png"} alt="avatar" class="avatar"/>
         <div class="container">
-
             <!-- svelte-ignore a11y-autofocus -->
             <input  bind:value={attendee_data.pName} autofocus class="container-input" placeholder="Name" />
             <button on:click={clickHandler} class="container-button">Join Board</button>
         </div>
     </div>
 
-
 {:else if creatingBoard==1}
 
-    <Board name={attendee_data.pName} boardName={""} isAdmin={false} boardId={data.boardid} />
+    <Board name={attendee_data.pName} isAdmin={false} boardId={data.boardid} />
 
 {/if}
 
@@ -55,6 +55,8 @@
         width:25%;
         border-radius: 50%;
         transform: translateY(-50%);
+        border:1px solid #161b33;
+        background-color: #ffffff;
     }
 
     .container{
@@ -78,10 +80,15 @@
         border-radius: 5px;
         width:80%;
         color:#f7f7f7;
+        border: 0;
+    }
+
+    .container-input:focus{
+        outline: 0;
     }
 
     .container-input::placeholder{
-        color: #f7f7f7;
+        color: #464646;
         opacity: 1;
     }
 
@@ -96,6 +103,8 @@
         border-radius: 20px;
         margin-top: 30px;
         color: #f7f7f7;
+        transition: background-color 0.5s;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     }
     .container-button:active{
         background-color: #747974;

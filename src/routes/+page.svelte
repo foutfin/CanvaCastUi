@@ -1,29 +1,39 @@
 <script>
     import Board from "../components/board/Board.svelte";
+    import Loading from "../components/board/Loading.svelte";
     let board_data = {pName:"",bName:"",avatar:1};
     let creatingBoard = 0;
     let boardId;
 
+<<<<<<< HEAD
 
     const clickHandle =()=>{
         creatingBoard = 1;
         const url = "https://canvacastserver-production.up.railway.app/createboard"
         fetch(url, {
+=======
+    const clickHandle =(e)=>{
+        if(board_data.pName.length > 0 & board_data.bName.length > 0){
+            creatingBoard = 1;
+            const url = `https://canvacastserver-production.up.railway.app/createboard`;
+            fetch(url, {
+>>>>>>> safe
                         method: 'POST', 
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(board_data),
                     }
-            )
-          .then((response) => response.json())
-          .then((data) =>{
-                  console.log(data);
-                //   window.location.href = "http://" + location.host +`/board/${data.roomid}`;
-                boardId = data.boardid;  
-                creatingBoard = 2;
-                  
-            });
+            ).then((response) => response.json())
+             .then((data) =>{
+                    boardId = data.boardid;  
+                    creatingBoard = 2;
+                    
+                });
+            return;
+        }
+        e.target.style.backgroundColor = "#ad2831";
+        return;
     }
 
 </script>
@@ -31,35 +41,26 @@
 
 {#if creatingBoard==1}
 
-    <h1>Wait a while Creating Board for you</h1>
+    <Loading message={"Creating a Board"} />
 
 
 {:else if creatingBoard==2}
 
-    <Board name={board_data.pName} boardName={board_data.bName} isAdmin={true} boardId={boardId}/>
+    <Board name={board_data.pName} isAdmin={true} boardId={boardId}/>
 
 {:else}
 
     <div class="main-container">
-
-        <img src={"images/avatar.jpg"} alt="avatar" class="avatar"/>
-
+        <img src={"images/hacker.png"} alt="avatar" class="avatar"/>
         <div class="container">
-
+            <!-- svelte-ignore a11y-autofocus -->
             <input  bind:value={board_data.pName} autofocus class="container-input" placeholder="Name" />
             <input  bind:value={board_data.bName}   class="container-input" placeholder="Board Name"/>
-
             <button on:click={clickHandle} class="container-button">Create Board</button>
-
         </div>
-
     </div>
 
 {/if}
-
-
-
-
 
 <style>
     
@@ -81,6 +82,8 @@
         width:25%;
         border-radius: 50%;
         transform: translateY(-50%);
+        border:1px solid #161b33;
+        background-color: #ffffff;
     }
 
     .container{
@@ -104,10 +107,14 @@
         border-radius: 5px;
         width:80%;
         color:#f7f7f7;
+        border: 0;
+    }
+    .container-input:focus{
+        outline: 0;
     }
 
     .container-input::placeholder{
-        color: #f7f7f7;
+        color: #464646;
         opacity: 1;
     }
 
@@ -122,6 +129,8 @@
         border-radius: 20px;
         margin-top: 30px;
         color: #f7f7f7;
+        transition: background-color 0.5s;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     }
     .container-button:active{
         background-color: #747974;
