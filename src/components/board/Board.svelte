@@ -12,17 +12,11 @@
 
     let me ={};
     let connected = false;
-<<<<<<< HEAD
-    let selected = 1;
-    const socketurl = `wss://canvacastserver-production.up.railway.app/join/${boardId}`;
-    const url = `https://canvacast.netlify.app/board/${boardId}`;
-=======
     let loading = true;
     const socketurl = `wss://canvacastserver-production.up.railway.app/join/${boardId}`;
     const url = `https://canvacast.netlify.app/board/${boardId}`;
     let toogleshape = false;
     let tooglecolor = false;
->>>>>>> safe
 
     onMount(()=>{
 
@@ -163,7 +157,7 @@
         }
     }
 
-    </script>
+</script>
 
 
 {#if loading}
@@ -446,10 +440,7 @@
         width:1920px;
         height:1080px;
         background-color: #fff;
-<<<<<<< HEAD
-=======
         position: relative;
->>>>>>> safe
     }
 
 </style>
