@@ -1,7 +1,7 @@
 <script>
-    import {context,drawing,path,pen,cvs} from './stores/store.js';
+    import {context,drawing,path,pen,cvs,names,colorPallete} from './stores/store.js';
     import { onMount } from 'svelte';
-    import {draw,erase,line} from './utils/draw.js';
+    import {draw,erase,shape} from './utils/draw.js';
     let currentx,currenty;
 
     onMount(()=>{
@@ -16,11 +16,11 @@
             const X = e.offsetX;
             const Y = e.offsetY;
             if($pen.type == 2 | $pen.type == 3){
-                [currentx,currenty] = draw(currentx,currenty,X,Y,$context,$pen.color,$pen.stroke);
+                draw(X,Y,$context,$colorPallete[parseInt($pen.color)-1],$pen.stroke);
             }else if($pen.type == 4){
-                erase(X,Y,$context); 
+                erase(X,Y,$context,$names); 
             }else if($pen.type == 5){
-                line(currentx,currenty,X,Y,overlayBoardContext,$pen.color,$pen.stroke);                 
+                shape($pen.metadata , currentx,currenty,X,Y,overlayBoardContext,$colorPallete[parseInt($pen.color)-1],$pen.stroke);            
             }
             path.update((p)=>{
                     p.m.push({x:X,y:Y});
@@ -34,19 +34,19 @@
             let Y = e.targetTouches[0].pageY - rect.top;
 
             if($pen.type == 2 | $pen.type == 3){
-                draw(X,Y);
+                draw(X,Y,$context,$colorPallete[parseInt($pen.color)-1],$pen.stroke);
             }else if($pen.type == 4){
-                erase(X,Y); 
+                erase(X,Y,$context,$names); 
             }else if($pen.type == 5){
-                line(X,Y);                 
+                shape($pen.metadata , currentx,currenty,X,Y,overlayBoardContext,$colorPallete[parseInt($pen.color)-1],$pen.stroke);            
             }
             path.update((p)=>{
                     p.m.push({x:X,y:Y});
                     return p;
-            }); 
+            });
         }
 
-        overlayBoard.addEventListener('mousedown', function(e) {
+        board.addEventListener('mousedown', function(e) {
             const X = e.offsetX;
             const Y = e.offsetY;
             currentx = X;
@@ -57,9 +57,13 @@
                         return {...p,d:{x:X,y:Y}};
                     }
                     return {d:{x:X,y:Y},m:[]};
-                })
+            });
 
-            if($pen.type == 5){
+            if($pen.type == 2 | $pen.type == 3){
+                
+                $context.beginPath();
+                $context.moveTo(X,Y);
+            }else if($pen.type == 5){
                 overlayBoardContext.beginPath();
                 overlayBoardContext.moveTo(X,Y);
             }
@@ -67,18 +71,18 @@
 
             drawing.update(()=>true);
     
-            overlayBoard.addEventListener('mousemove',onMove);
+            board.addEventListener('mousemove',onMove);
 
-            overlayBoard.addEventListener('mouseup', function removeMoveHandler() {
-                overlayBoard.removeEventListener('mousemove', onMove);
+            board.addEventListener('mouseup', function removeMoveHandler() {
+                board.removeEventListener('mousemove', onMove);
                 drawing.update(()=>false);
                 if($pen.type == 5){
                     $context.drawImage(overlayBoard,0,0);
                     overlayBoardContext.clearRect(0, 0, 1920, 1080);
                 }
             });
-            overlayBoard.addEventListener('mouseout', function removeMoveHandler() {
-                overlayBoard.removeEventListener('mousemove', onMove);
+            board.addEventListener('mouseout', function removeMoveHandler() {
+                board.removeEventListener('mousemove', onMove);
                 drawing.update(()=>false);
                 if($pen.type == 5){
                     $context.drawImage(overlayBoard,0,0);
@@ -95,6 +99,24 @@
 
             currentx = X;
             currenty = Y;
+
+            path.update((p)=>{
+                    if(p){
+                        return {...p,d:{x:X,y:Y}};
+                    }
+                    return {d:{x:X,y:Y},m:[]};
+            });
+
+            if($pen.type == 2 | $pen.type == 3){
+                
+                $context.beginPath();
+                $context.moveTo(X,Y);
+            }else if($pen.type == 5){
+                overlayBoardContext.beginPath();
+                overlayBoardContext.moveTo(X,Y);
+            }
+
+            drawing.update(()=>true);
             
             board.addEventListener('touchmove',onMoveTouch);
 
@@ -114,8 +136,8 @@
 
 <style>
     #board-canvas{
-        background-color: #fff;
         touch-action:auto;
+        z-index: 1;
     }
     .boards{
         position:absolute;
@@ -129,5 +151,5 @@
 
 </style>
 
-<canvas width="1920" height="1080" id="board-canvas" class="boards"></canvas>
 <canvas width="1920" height="1080" id="board-overlay" class="boards"></canvas>
+<canvas width="1920" height="1080" id="board-canvas" class="boards"></canvas>

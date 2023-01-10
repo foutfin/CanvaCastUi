@@ -1,31 +1,43 @@
 <script>
     import { onMount } from "svelte";
-    import {sidebartool,pen,cvs} from "./stores/store.js";
+    import {sidebartool,pen,cvs,colortool,shapetool} from "./stores/store.js";
 
-    export let id ,func=undefined;
+    export let id ,func=undefined,store,type,checker=[];
 
     const clickHandler = () =>{
-        if(id == 6){
-            func();
-        }else{
-            sidebartool.update(()=>id); 
-            pen.update((p)=>{
-                if(id == 2){
-                    return {...p,type:id,stroke:2};
-                }else if(id == 3){
-                    return {...p,type:id,stroke:4};
-                }
-                return {...p,type:id};            
-            });
+        checker.forEach(ele=> {
+            ele();
+        });
+        if(type=="sd"){
+            if(id == 7 ){
+                func();
+                return;
+             }else if(id == 5 | id == 6){
+                func();
+             }
         }
+        store.update(()=>id); 
+        pen.update((p)=>{
+            if($sidebartool == 2){
+                return {...p,type:$sidebartool,stroke:2,color:$colortool};
+            }else if($sidebartool == 3){
+                return {...p,type:$sidebartool,stroke:4,color:$colortool};
+            }else if($sidebartool == 5){
+                return {...p,type:$sidebartool,color:$colortool,metadata:$shapetool};
+            }
+            return {...p,type:$sidebartool};            
+        });
+
+        
+            
     }
     onMount(()=>{
-        const e = document.getElementById(`sicon-${id}`);
-        sidebartool.subscribe((value)=>{
+        const e = document.getElementById(`${type}-${id}`);
+        store.subscribe((value)=>{
             if (id == value){
                 e.style.backgroundColor = "#adb5bd";           
-                return;
-            }
+                return;           
+             }
             if(value == 1){
                 if($cvs){
                     $cvs.style.touchAction = "auto";
@@ -43,7 +55,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div id={`sicon-${id}`} on:click={clickHandler}  class="container hoverer">
+<div id={`${type}-${id}`} on:click={clickHandler}  class="container hoverer">
     <slot class="svg"/>
 </div>
 
