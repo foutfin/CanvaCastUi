@@ -46,7 +46,7 @@
             });
         }
 
-        board.addEventListener('mousedown', function(e) {
+        board.addEventListener('pointerdown', function(e) {
             const X = e.offsetX;
             const Y = e.offsetY;
             currentx = X;
@@ -71,18 +71,18 @@
 
             drawing.update(()=>true);
     
-            board.addEventListener('mousemove',onMove);
+            board.addEventListener('pointermove',onMove);
 
-            board.addEventListener('mouseup', function removeMoveHandler() {
-                board.removeEventListener('mousemove', onMove);
+            board.addEventListener('pointerup', function removeMoveHandler() {
+                board.removeEventListener('pointermove', onMove);
                 drawing.update(()=>false);
                 if($pen.type == 5){
                     $context.drawImage(overlayBoard,0,0);
                     overlayBoardContext.clearRect(0, 0, 1920, 1080);
                 }
             });
-            board.addEventListener('mouseout', function removeMoveHandler() {
-                board.removeEventListener('mousemove', onMove);
+            board.addEventListener('pointerout', function removeMoveHandler() {
+                board.removeEventListener('pointermove', onMove);
                 drawing.update(()=>false);
                 if($pen.type == 5){
                     $context.drawImage(overlayBoard,0,0);
@@ -92,43 +92,43 @@
 
         });
 
-        board.addEventListener('touchstart', function(e) {
-            let rect = board.getBoundingClientRect();
-            let X = e.targetTouches[0].pageX - rect.left;
-            let Y = e.targetTouches[0].pageY - rect.top;
+        // board.addEventListener('touchstart', function(e) {
+        //     let rect = board.getBoundingClientRect();
+        //     let X = e.targetTouches[0].pageX - rect.left;
+        //     let Y = e.targetTouches[0].pageY - rect.top;
 
-            currentx = X;
-            currenty = Y;
+        //     currentx = X;
+        //     currenty = Y;
 
-            path.update((p)=>{
-                    if(p){
-                        return {...p,d:{x:X,y:Y}};
-                    }
-                    return {d:{x:X,y:Y},m:[]};
-            });
+        //     path.update((p)=>{
+        //             if(p){
+        //                 return {...p,d:{x:X,y:Y}};
+        //             }
+        //             return {d:{x:X,y:Y},m:[]};
+        //     });
 
-            if($pen.type == 2 | $pen.type == 3){
+        //     if($pen.type == 2 | $pen.type == 3){
                 
-                $context.beginPath();
-                $context.moveTo(X,Y);
-            }else if($pen.type == 5){
-                overlayBoardContext.beginPath();
-                overlayBoardContext.moveTo(X,Y);
-            }
+        //         $context.beginPath();
+        //         $context.moveTo(X,Y);
+        //     }else if($pen.type == 5){
+        //         overlayBoardContext.beginPath();
+        //         overlayBoardContext.moveTo(X,Y);
+        //     }
 
-            drawing.update(()=>true);
+        //     drawing.update(()=>true);
             
-            board.addEventListener('touchmove',onMoveTouch);
+        //     board.addEventListener('touchmove',onMoveTouch);
 
-            board.addEventListener('touchend', function removeMoveHandler() {
-                board.removeEventListener('touchmove', onMoveTouch);
-                drawing.update(()=>false);
-                if($pen.type == 5){
-                    $context.drawImage(overlayBoard,0,0);
-                    overlayBoardContext.clearRect(0, 0, 1920, 1080);
-                }                
-            });
-        });
+        //     board.addEventListener('touchend', function removeMoveHandler() {
+        //         board.removeEventListener('touchmove', onMoveTouch);
+        //         drawing.update(()=>false);
+        //         if($pen.type == 5){
+        //             $context.drawImage(overlayBoard,0,0);
+        //             overlayBoardContext.clearRect(0, 0, 1920, 1080);
+        //         }                
+        //     });
+        // });
 
     })
 
