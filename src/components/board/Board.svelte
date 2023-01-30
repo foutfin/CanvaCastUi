@@ -13,7 +13,7 @@
     let me ={};
     let connected = false;
     let loading = true;
-    const socketurl = `wss://canvacastserver-production.up.railway.app/join/${boardId}`;
+    const socketurl = `wss://canvacastserver-productio.up.railway.app/join/${boardId}`;
     const url = `https://canvacast.netlify.app/board/${boardId}`;
     let toogleshape = false;
     let tooglecolor = false;
