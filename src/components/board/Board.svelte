@@ -9,12 +9,13 @@
     import User from "./User.svelte";
     import Newicon from "./Newicon.svelte";
     import Loading from "./Loading.svelte";
+    import { PUBLIC_socket_url,PUBLIC_main_host } from '$env/static/public';
 
     let me ={};
     let connected = false;
     let loading = true;
-    const socketurl = `wss://canvacastserver-productio.up.railway.app/join/${boardId}`;
-    const url = `https://canvacast.netlify.app/board/${boardId}`;
+    const socketurl = `${PUBLIC_socket_url}${boardId}`;
+    const url = `${PUBLIC_main_host}board/${boardId}`;
     let toogleshape = false;
     let tooglecolor = false;
 

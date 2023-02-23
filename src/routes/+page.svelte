@@ -1,6 +1,7 @@
 <script>
     import Board from "../components/board/Board.svelte";
     import Loading from "../components/board/Loading.svelte";
+    import { PUBLIC_server_url } from '$env/static/public';
     let board_data = {pName:"",bName:"",avatar:1};
     let creatingBoard = 0;
     let boardId;
@@ -8,7 +9,7 @@
     const clickHandle =(e)=>{
         if(board_data.pName.length > 0 & board_data.bName.length > 0){
             creatingBoard = 1;
-            const url = `https://canvacastserver-productio.up.railway.app/createboard`;
+            const url = `${PUBLIC_server_url}`;
             fetch(url, {
                         method: 'POST', 
                         headers: {
