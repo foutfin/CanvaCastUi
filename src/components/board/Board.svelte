@@ -21,7 +21,7 @@
 
     onMount(()=>{
 
-        document.querySelector("#link-holder").value = url;
+        
         const createBoard =()=>{
             const c = document.createElement('canvas');
             c.setAttribute("width","1920");
@@ -255,7 +255,7 @@
                         <img on:click={hideOverlay} class="close" src="/images/close.png" alt="close"/>
                     </div>
                     <div class="url-copy">
-                        <input id="link-holder" disabled/>
+                        <input value={url} id="link-holder" disabled/>
                         <button on:click={()=>navigator.clipboard.writeText(url)}>Copy</button>
                     </div>
                     <div class="p-container">
